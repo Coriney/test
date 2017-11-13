@@ -4,7 +4,6 @@
 	"nodepay": "https://wallet.rise.vision",
 	"pubkey": "3d6941dd0de03de60c21403d736739af2c98b2fde0535e9a9a0c8ddfe1d2fe24",
 	"percentage": 90,
-	"percentagenewbie": 80,
 	"logfile": "poollogs.json",
 	"minpayout": 0.5,
 	"secret": "SECRET",
