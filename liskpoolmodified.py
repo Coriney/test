@@ -77,13 +77,13 @@ def estimatePayouts (log):
 		uri = conf['node'] + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + conf['pubkey'] + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
 		d = requests.get (uri)
 		rew = d.json ()['rewards']
-
-#이게 for loop 밖에있어서 단일로 처리하는거얌
-	# forged = (int (rew) / 100000000) * conf['percentage'] / 100
-	# print ('To distribute: %f %s' % (forged, conf['coin']))
 	
-	# if forged < 0.1:
-	# 	return ([], log, 0.0)
+	#여기에 있던 #표시는 지웠는데 문제가 될까?
+	forged = (int (rew) / 100000000) * conf['percentage'] / 100
+	print ('To distribute: %f %s' % (forged, conf['coin']))
+	
+	if forged < 0.1:
+		return ([], log, 0.0)
 		
 	d = requests.get (conf['node'] + '/api/delegates/voters?publicKey=' + conf['pubkey']).json ()
 	
@@ -103,16 +103,18 @@ def estimatePayouts (log):
 		if int (x['balance']) == 0 or x['address'] in conf['skip']:
 			continue
 
-		if x['address'] == '123' :
-    		x['address'] == '456'
+		#이렇게 해봤는데 틀린건가?
+		if x['address'] in conf['transfer'] :
+    		x['address'] == '3089732396739828147R'
 
+		#이 줄은 꼭 넣어야 하는거야?
 		forged = 0
 
-		#특별한 사람 
-		if x['address'] == '234' :
-    		forged = (int (rew) / 100000000) * conf['특별 percent'] / 100
+		#고인물 우대
+		if x['address'] in conf['newbie']:
+    		forged = (int (rew) / 100000000) * conf['percentagenewbie'] / 100
 		else :
-    		forged = (int (rew) / 100000000) * conf['percent'] / 100
+    		forged = (int (rew) / 100000000) * conf['percentage'] / 100
 			
 		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
 		#print (float (x['balance']) / 100000000, payouts [x['address']], x['address'])
