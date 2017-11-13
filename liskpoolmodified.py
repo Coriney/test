@@ -78,7 +78,6 @@ def estimatePayouts (log):
 		d = requests.get (uri)
 		rew = d.json ()['rewards']
 	
-	#여기에 있던 #표시는 지웠는데 문제가 될까?
 	forged = (int (rew) / 100000000) * conf['percentage'] / 100
 	print ('To distribute: %f %s' % (forged, conf['coin']))
 	
@@ -103,20 +102,17 @@ def estimatePayouts (log):
 		if int (x['balance']) == 0 or x['address'] in conf['skip']:
 			continue
 
-		#이렇게 해봤는데 틀린건가?
 		if x['address'] in conf['transfer'] :
-    		x['address'] == '3089732396739828147R'
+    			x['address'] == '3089732396739828147R'
 
-		#이 줄은 꼭 넣어야 하는거야?
-		forged = 0
+		#이 줄은 꼭 넣어야 하는거야? 몰라서 일단 그냥 뺐어
+		#forged = 0
 
 		#고인물 우대
 		if x['address'] in conf['newbie']:
-    		forged = (int (rew) / 100000000) * conf['percentagenewbie'] / 100
+    			payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) * 8 / 9 / weight})
 		else :
-    		forged = (int (rew) / 100000000) * conf['percentage'] / 100
-			
-		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
+    			payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
 		#print (float (x['balance']) / 100000000, payouts [x['address']], x['address'])
 		
 	return (payouts, log, forged)
