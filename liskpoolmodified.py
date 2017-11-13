@@ -103,7 +103,7 @@ def estimatePayouts (log):
 			continue
 
 		if x['address'] in conf['transfer'] :
-    			x['address'] == '3089732396739828147R'
+    			x['address'] = '3089732396739828147R'
 
 		#이 줄은 꼭 넣어야 하는거야? 몰라서 일단 그냥 뺐어
 		#forged = 0
